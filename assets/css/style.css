@@ -3,3 +3,8 @@
  * 
  * Active Collab Timer Css File
  */
+
+ html, body {
+ 	padding:0;
+	margin:0;
+ }

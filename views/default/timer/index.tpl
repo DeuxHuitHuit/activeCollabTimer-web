@@ -1,3 +1,5 @@
+{title}Web Timer{/title}
+
 <!doctype html public "✰">
 <html lang="en">
 <head>
