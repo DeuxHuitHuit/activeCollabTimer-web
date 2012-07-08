@@ -2,16 +2,23 @@
   /**
    * WebTimer module definition
    *
-   * @package activeCollab.modules.files
+   * @package activeCollab.modules.timer
    */
-  class WebTimerModule extends AngieModule {
+  class TimerModule extends AngieModule {
 
     /**
      * Short module name
      *
      * @var string
      */
-    protected $name = 'web-timer';
+    protected $name = 'timer';
+    
+    /**
+     * Is system module flag
+     *
+     * @var boolean
+     */
+    var $is_system = false;
 
     /**
      * Module version
@@ -32,7 +39,7 @@
      */
     function defineRoutes() {
     	// General assets routes
-      Router::map('web_timer', 'timer', array('controller' => 'timer', 'action' => 'index'));
+      Router::map('timer', 'timer', array('controller' => 'timer', 'action' => 'index'));
     } // defineRoutes
 
     /**
@@ -47,15 +54,15 @@
     // ---------------------------------------------------
 
     /**
-     * This module can be disabled
+     * This module can't be disabled
      *
      * @param User $user
      * @return boolean
      */
-    function canDisable(User $user) {
+    /*function canDisable(User $user) {
       return true;
     } // canDisable
-
+*/
     // ---------------------------------------------------
     //  Name
     // ---------------------------------------------------
@@ -66,7 +73,7 @@
      * @return string
      */
     function getDisplayName() {
-      return lang('Web Timer');
+      return /*lang(*/'Web Timer'/*)*/;
     } // getDisplayName
 
     /**
@@ -75,7 +82,7 @@
      * @return string
      */
     function getDescription() {
-      return lang('Adds a web interface for Active Collab\'s Timer desktop applications');
+      return /*lang(*/'Adds a web interface for Active Collab\'s Timer desktop applications'/*)*/;
     } // getDescription
 
     /**
@@ -84,7 +91,7 @@
      * @return string
      */
     function getUninstallMessage() {
-      return lang('Module will be deactivated.');
+      return /*lang(*/'Module will be deactivated.'/*)*/;
     } // getUninstallMessage
 
   }
