@@ -13,14 +13,14 @@
    * @param NamedList $menu
    * @param User $user
    */
-  function timer_on_phone_homescreen(NamedList &$menu, User &$user) {
-	$menu->add('timer',
+  function timer_handle_on_phone_homescreen(NamedList &$items, IUser &$user) {
+	$items->add('timer',
 			array(
 				'text' => lang('Timer'),
 				'url' => TimerModule::getTimerRoute(),
 				'icon' => AngieApplication::getImageUrl('module.png',
 							TIMER_MODULE,
-							AngieApplication::INTERFACE_DEFAULT)
+							AngieApplication::INTERFACE_PHONE)
 			)
 		);
   } // timer_on_phone_homescreen
