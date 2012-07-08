@@ -52,6 +52,7 @@
      */
     function defineHandlers() {
     	EventsManager::listen('on_main_menu', 'on_main_menu');
+    	EventsManager::listen('on_phone_homescreen', 'on_phone_homescreen');
     } // defineHandlers
 
     // ---------------------------------------------------
