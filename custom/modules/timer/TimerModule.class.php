@@ -12,7 +12,7 @@
      * @var string
      */
     protected $name = 'timer';
-    
+
     /**
      * Is system module flag
      *
@@ -38,15 +38,20 @@
      * Define module routes
      */
     function defineRoutes() {
-    	// General assets routes
-      Router::map('timer', 'timer', array('controller' => 'timer', 'action' => 'index'));
+		// Timer routes
+		Router::map('timer', 'timer', array('controller' => 'timer', 'action' => 'index'));
     } // defineRoutes
+
+
+    static function getTimerRoute() {
+    	return Router::assemble('timer');
+    }
 
     /**
      * Define event handlers
      */
     function defineHandlers() {
-
+    	EventsManager::listen('on_main_menu', 'on_main_menu');
     } // defineHandlers
 
     // ---------------------------------------------------
@@ -54,15 +59,15 @@
     // ---------------------------------------------------
 
     /**
-     * This module can't be disabled
+     * This module can be disabled
      *
      * @param User $user
      * @return boolean
      */
-    /*function canDisable(User $user) {
+    function canDisable(User $user) {
       return true;
     } // canDisable
-*/
+
     // ---------------------------------------------------
     //  Name
     // ---------------------------------------------------
@@ -73,7 +78,7 @@
      * @return string
      */
     function getDisplayName() {
-      return /*lang(*/'Web Timer'/*)*/;
+      return lang('Web Timer');
     } // getDisplayName
 
     /**
@@ -82,7 +87,7 @@
      * @return string
      */
     function getDescription() {
-      return /*lang(*/'Adds a web interface for Active Collab\'s Timer desktop applications'/*)*/;
+      return lang('Adds a web interface for Active Collab\'s Timer desktop applications');
     } // getDescription
 
     /**
@@ -91,7 +96,7 @@
      * @return string
      */
     function getUninstallMessage() {
-      return /*lang(*/'Module will be deactivated.'/*)*/;
+      return lang('Module will be deactivated.');
     } // getUninstallMessage
 
   }

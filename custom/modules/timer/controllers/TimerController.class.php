@@ -23,13 +23,14 @@
      */
     function __before() {
       parent::__before();
-      
-      //$this->wireframe->tabs->clear();
-      //$this->wireframe->tabs->add('calendar', lang('Calendar'), Router::assemble('dashboard_calendar'), null, true);
-      
-      //EventsManager::trigger('on_calendar_tabs', array(&$this->wireframe->tabs, &$this->logged_user));
 
-      $this->wireframe->breadcrumbs->add('timer', /*lang(*/'Timer'/*)*/, Router::assemble('timer'));
+      $this->wireframe->tabs->clear();
+      $this->wireframe->tabs->add('calendar', lang('Timer'), TimerModule::getTimerRoute(), null, true);
+
+      // Custom event
+      EventsManager::trigger('on_timer_tabs', array(&$this->wireframe->tabs, &$this->logged_user));
+
+      $this->wireframe->breadcrumbs->add('timer', lang('Timer'), TimerModule::getTimerRoute());
       $this->wireframe->setCurrentMenuItem('timer');
     } // __construct
 
@@ -37,7 +38,7 @@
      * Timer
      */
     function index() {
-      
+
     } // timer
 
 
