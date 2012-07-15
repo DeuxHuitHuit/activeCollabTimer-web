@@ -32,6 +32,8 @@
 
       $this->wireframe->breadcrumbs->add('timer', lang('Timer'), TimerModule::getTimerRoute());
       $this->wireframe->setCurrentMenuItem('timer');
+
+      $this->wireframe->actions->clear();
     } // __construct
 
     /**

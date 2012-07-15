@@ -1,4 +1,4 @@
-<div id="timer">
+<div id="timer" data-dividertheme="j" data-theme="j">>
 <section>
 	<div id="timer-display">
 	<header>
@@ -17,7 +17,7 @@
 
 	<div id="timer-footer">
 	<footer>
-		<button id="timer-add">Add Timer</button>
+		<button id="timer-add" class="default">Add Timer</button>
 	</footer>
 	</div>
 
