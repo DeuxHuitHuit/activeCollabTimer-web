@@ -2,18 +2,20 @@
  * @author Deux Huit Huit
  * 
  * Active Collab Timer
- * TimerController Class
+ * Projects Class
  */
 (function () {
 	
 	"use strict";
 	
-	var TimerController = {
-			
+	var Projects = {
+		load : function (apiUrl, callback) {
+		
+		}
 	};
 	
 	// export to App
 	window.App.Timer = window.App.Timer || {};
-	window.App.Timer.Controller = TimerController;
+	window.App.Timer.Projects = Projects;
 	
 })();

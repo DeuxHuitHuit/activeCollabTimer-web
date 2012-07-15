@@ -1,12 +1,16 @@
-<div id="timer" data-dividertheme="j" data-theme="j">>
+<div id="timer" data-dividertheme="j" data-theme="j">
 <section>
 	<div id="timer-display">
 	<header>
-		<button id="timer-start">Start</button>
+		{wrap_buttons id='timer-start'}
+			{submit}Start{/submit}
+		{/wrap_buttons}
 		<div id="timer-time">
 			<div id="timer-time-current">00:00</div>
 		</div>
-		<button id="timer-submit">Submit</button>
+		{wrap_buttons id='timer-submit'}
+			{submit}Submit{/submit}
+		{/wrap_buttons}
 	</header>
 	</div>
 
@@ -24,5 +28,5 @@
 </section>
 </div>
 <script type="text/javascript">
-	App.widgets.Timer.init('timer', '{$api-url}');
+	App.widgets.Timer.init('timer', '{$api_url}');
 </script>

@@ -30,10 +30,13 @@
       // Custom event
       EventsManager::trigger('on_timer_tabs', array(&$this->wireframe->tabs, &$this->logged_user));
 
+      // set wireframe
       $this->wireframe->breadcrumbs->add('timer', lang('Timer'), TimerModule::getTimerRoute());
       $this->wireframe->setCurrentMenuItem('timer');
-
       $this->wireframe->actions->clear();
+
+      // assign template variable
+      $this->smarty->assign('api_url', ROOT_URL . 'api.php?auth_api_token=1-HQVcG1x3xfSNIMypMkDsAVT8W670QwGwhI387Tta');
     } // __construct
 
     /**
