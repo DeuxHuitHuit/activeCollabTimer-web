@@ -3,13 +3,15 @@
 	<div id="timer-display">
 	<header>
 		{wrap_buttons id='timer-start'}
-			{submit}Start{/submit}
+			{button}Start{/button}
 		{/wrap_buttons}
-		<div id="timer-time">
-			<div id="timer-time-current">00:00</div>
+		<div id="timer-time-wrap">
+			<div id="timer-time">
+				<div id="timer-time-current">00:00</div>
+			</div>
 		</div>
 		{wrap_buttons id='timer-submit'}
-			{submit}Submit{/submit}
+			{button}Submit{/button}
 		{/wrap_buttons}
 	</header>
 	</div>

@@ -1,0 +1,57 @@
+/*
+ * @author Deux Huit Huit
+ * 
+ * Active Collab Timer Mobile Css File
+ */
+#timer {
+	
+}
+
+/**********************************/
+#timer #timer-display {
+
+}
+
+#timer #timer-display #timer-start {
+
+}
+
+#timer #timer-display #timer-submit {
+
+}
+
+#timer #timer-display #timer-time-wrap {
+	width: 90%;
+	padding-right: 18px;
+	margin-left: 17px;
+}
+
+#timer #timer-display #timer-time {
+	width: 50%;
+	height: 100px;
+	margin: 0 auto;
+	display:block;
+}
+
+#timer #timer-display #timer-time #timer-time-current {
+	font-size: 100px;
+	line-height: 100px;
+}
+
+/**********************************/
+#timer #timer-current-task {
+
+}
+
+/**********************************/
+#timer  #timer-footer {
+
+}
+
+#timer  #timer-footer #timer-add {
+	
+}
+
+/*
+ * End Active Collab Timer Mobile Css File
+ */

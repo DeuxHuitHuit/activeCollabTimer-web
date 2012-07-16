@@ -36,7 +36,7 @@
       $this->wireframe->actions->clear();
 
       // assign template variable
-      $this->smarty->assign('api_url', ROOT_URL . 'api.php?auth_api_token=1-HQVcG1x3xfSNIMypMkDsAVT8W670QwGwhI387Tta');
+      $this->smarty->assign('api_url', ROOT_URL . '/api.php?format=json&auth_api_token=1-HQVcG1x3xfSNIMypMkDsAVT8W670QwGwhI387Tta');
     } // __construct
 
     /**

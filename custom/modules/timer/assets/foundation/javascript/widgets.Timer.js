@@ -2,7 +2,7 @@
  * @author Deux Huit Huit
  * 
  * Active Collab Timer
- * Timer Class
+ * TimerWidget Class
  */
 (function () {
 	
@@ -11,22 +11,13 @@
 	var 
 	
 	TimerWidget = {
-		init: function (id) {
+		init: function (id, apiUrl) {
 			this.container = $('#' + id);
-		}
-	},
-	
-	_getNow = function () {
-		return (new Date()).getTime();
-	},
-	
-	Timer = function () {
-		this.start = _getNow();
-	};
-	
-		Timer.prototype.getTime = function () {
+			console.log(apiUrl);
 			
-		};
+			window.App.Timer.Controller.load();
+		}
+	};
 	
 	// export to App.widgets
 	window.App.widgets.Timer = TimerWidget;

@@ -24,23 +24,27 @@
 	vertical-align: middle;
 }
 
-#timer #timer-display #timer-time {
+#timer #timer-display #timer-time-wrap {
 	display: inline-block;
 	vertical-align: top;
+	
+	text-align: center;
+}
+
+#timer #timer-display #timer-time {
+	display:inline-block;
 	width: 200px;
 	height: 50px;
 	margin: 0 20px;
 	
 	border-radius: 4px;
 	background-color: #333;
-	
-	text-align: center;
 }
 
 #timer #timer-display #timer-time #timer-time-current {
 	font-size: 40px;
 	color: #fff;
-	font-weigth: bold;
+	font-weight: bold;
 	line-height: 50px;
 	vertical-align: middle;
 }
