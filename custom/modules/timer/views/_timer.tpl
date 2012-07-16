@@ -17,7 +17,7 @@
 	</div>
 
 	<div id="timer-current-task">
-		<h3>Current Timer</h3>
+		<h3>Current Task</h3>
 		<span><em>None...</em></span>
 	</div>
 
