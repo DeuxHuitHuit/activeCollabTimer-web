@@ -23,7 +23,9 @@
 
 	<div id="timer-footer">
 	<footer>
-		<button id="timer-add" class="default">Add Timer</button>
+		{wrap_buttons id='timer-add'}
+			{button}Add Timer{/button}
+		{/wrap_buttons}
 	</footer>
 	</div>
 
