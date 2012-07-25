@@ -4,7 +4,7 @@
  * Active Collab Timer Mobile Css File
  */
 #timer {
-	
+	position: relative;
 }
 
 /**********************************/
@@ -94,3 +94,11 @@
 /*
  * End Active Collab Timer Mobile Css File
  */
+ 
+ #timer #page-project {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+ }

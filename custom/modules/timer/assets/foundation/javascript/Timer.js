@@ -19,30 +19,37 @@
 	},
 	
 	Timer = function (taskId, start, end) {
-		this.start = start || _getNow();
+		this.start = start || null;
 		this.end = end || null;
 		this.taskId = taskId;
 	},
 	
 	TimerController = {
+		init: function () {
+			var jsonTimer = JSON.parse($.cookie(TIMER_COOKIE));
+			if (!!jsonTimer && !!jsonTimer.taskId) {
+				_timer = new Timer(jsonTimer.taskId, jsonTimer.start, jsonTimer.end);
+			}
+		},
 		create: function(taskId) {
 			_timer = new Timer(taskId);
 		},
 		save: function () {
 			$.cookie(TIMER_COOKIE, JSON.stringify(_timer), {expires:30, path: '/timer'});
 		},
-		load: function () {
-			var jsonTimer = JSON.parse($.cookie(TIMER_COOKIE));
-			if (!!jsonTimer && !!jsonTimer.taskId) {
-				_timer = new Timer(jsonTimer.taskId, jsonTimer.start, jsonTimer.end);
-			}
-		},
+		
 		remove: function () {
 			$.cookie(TIMER_COOKIE, null);
 			_timer = null;
+		},
+		hasTimer: function() {
+			return !!_timer;
 		}
 	};
 	
+	Timer.prototype.start = function() {
+		
+	},
 	Timer.prototype.getDuration = function () {
 		return this.end - this.start;
 	};
