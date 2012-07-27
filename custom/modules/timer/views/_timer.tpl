@@ -7,7 +7,7 @@
 				{button}Start{/button}
 			{/wrap_buttons}
 			<div id="timer-time-wrap">
-				<div id="timer-time">t
+				<div id="timer-time">
 					<div id="timer-time-current">
 						00:00
 					</div>
@@ -21,7 +21,8 @@
 
 		<div id="timer-current-task">
 			<h3>Current Task</h3>
-			<span><em>None...</em></span>
+			<span><em>None...</em></span><br/>
+			<a id="timer-current-task-delete">Delete</a>
 		</div>
 
 		<div id="timer-footer">

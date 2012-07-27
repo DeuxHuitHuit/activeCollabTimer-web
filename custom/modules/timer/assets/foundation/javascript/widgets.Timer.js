@@ -13,14 +13,15 @@
 	TimerWidget = {
 		init: function (id, apiUrl) {
 			this.container = $('#' + id);
-			window.App.Timer.Controller.init(apiUrl);
+			
 			window.App.Timer.Projects.init(apiUrl);
-			window.App.Timer.Projects.preLoad();
 			
-			window.App.widgets.Timer.PageTimer.init();
-			window.App.widgets.Timer.PageProjects.init();
-			window.App.widgets.Timer.PageProjectTasks.init();
-			
+			window.App.Timer.Controller.load(function() {
+				window.App.widgets.Timer.PageTimer.init();
+				window.App.widgets.Timer.PageProjects.init();
+				window.App.widgets.Timer.PageProjectTasks.init();
+				window.App.widgets.Timer.PageSubmit.init();
+			});
 		}
 	};
 	
@@ -50,6 +51,9 @@
 	timeoutAnimFlag = false,
 	pageTimer = null,
 	currentTime = null,
+	currentTimeHours = null,
+	currentTimeSeparator = null,
+	currentTimeMinutes = null,
 	
 	
 	showPage = function(currentPage) {
@@ -62,16 +66,28 @@
 	
 	timeoutAnimCallback = function() {
 		//refresh ui
-		updateUI();
-		$('#timer-time-current-separator',currentTime).toggle();
+		updateUI(); 
+		timeoutAnimFlag = !timeoutAnimFlag;
+		var opacity = timeoutAnimFlag ? 1 : 0;
+		currentTimeSeparator.css({opacity: opacity});
 		if(window.App.Timer.Controller.hasTimer()) {
 			var timerInfo = window.App.Timer.Controller.getTimerInfo();
 			
 			if(timerInfo.timer.isRunning()) {
 				//relaunch ui refresh
 				timeoutAnim = setTimeout(timeoutAnimCallback,980);
+			}else {
+				currentTimeSeparator.css({opacity: 1});
 			}
 		}
+	},
+	
+	startFlashingSeparator = function() {
+		updateUI();
+		//Launch timeout for ui refresh
+		timeoutAnimFlag = false;
+		currentTimeSeparator.css({opacity: 0});
+		timeoutAnim = setTimeout(timeoutAnimCallback,980);
 	},
 	
 	timerStartButtonClicked = function(e) {
@@ -82,13 +98,12 @@
 				//Start timer
 				timerInfo.timer.start();
 				window.App.Timer.Controller.save();
-				updateUI();
-				//Launch timeout for ui refresh
-				$('#timer-time-current-separator',currentTime).toggle(false);
-				timeoutAnim = setTimeout(timeoutAnimCallback,980);
+				startFlashingSeparator();
 			}else {
 				//stop timer
+				
 				timerInfo.timer.stop();
+				window.App.Timer.Controller.save();
 			}
 		}
 		return false;
@@ -98,7 +113,11 @@
 		if(window.App.Timer.Controller.hasTimer()) {
 			var timerInfo = window.App.Timer.Controller.getTimerInfo();
 			if(timerInfo.timer.getDuration() > 0) {
-				//Do job
+				//stop timer
+				timerInfo.timer.stop();
+				window.App.Timer.Controller.save();
+				//Show page submit
+				window.App.widgets.Timer.PageSubmit.show(pageTimer,timerInfo);
 			}
 		}
 		return false;
@@ -117,6 +136,15 @@
 		currentTime = $('#timer-time-current',pageTimer);
 		currentTaskWrap = $('#timer-current-task',pageTimer);
 		currentTaskNameHolder = $('span',currentTaskWrap);
+		
+		currentTimeHours = $('<span>');
+		currentTimeSeparator = $('<span>');
+		currentTimeSeparator.html(':');
+		currentTimeMinutes = $('<span>');
+		currentTime.html('');
+		currentTime.append(currentTimeHours);
+		currentTime.append(currentTimeSeparator);
+		currentTime.append(currentTimeMinutes);
 	},
 	
 	updateUI = function() {
@@ -137,8 +165,8 @@
 				secondes = Math.floor(dur / 1000 % 60),
 				hoursFormat = (hours < 10) ? '0' + hours : '' + hours,
 				minutesFormat = (minutes < 10) ? '0' + minutes : '' + minutes;
-			$('#timer-time-current-hours',currentTime).html(hoursFormat);
-			$('#timer-time-current-minutes',currentTime).html(minutesFormat);
+			currentTimeHours.html(hoursFormat);
+			currentTimeMinutes.html(minutesFormat);
 			
 			
 			if(timerInfo.timer.isRunning()) {
@@ -151,7 +179,8 @@
 			addBtn.show();
 			startBtn.css({opacity: .2}).addClass('disabled');
 			submitBtn.css({opacity: .2}).addClass('disabled');
-			currentTime.html('00:00');
+			currentTimeHours.html('00');
+			currentTimeMinutes.html('00');
 		}
 	},
 	
@@ -163,12 +192,21 @@
 		//Attach to add timer button
 		addBtn.click(timerAddButtonClicked);
 	},
+	initFlashingSeparatorIfNeeded = function() {
+		if(window.App.Timer.Controller.hasTimer()) {
+			var timerInfo = window.App.Timer.Controller.getTimerInfo();
+			if(timerInfo.timer.isRunning()) {
+				startFlashingSeparator();
+			}
+		}
+	},
 	
 	pageTimerController = {
 		init: function () {
 			initVariables();
 			updateUI();
 			bindButton();
+			initFlashingSeparatorIfNeeded();
 		}, 
 		show : showPage,
 	};
@@ -370,5 +408,54 @@
 	
 	// export to App.widgets
 	window.App.widgets.Timer.PageProjectTasks = pageProjectTasksController;
+	
+})();
+
+
+/*
+ * @author Deux Huit Huit
+ * 
+ * Active Collab Timer
+ * Page project Tasks
+ */
+(function () {
+
+	"use strict";
+	
+	var 
+	
+	pageSubmit = null,
+	timerData = null,
+
+	showPage = function(currentPage, timerInfo) {
+		//Save timer info
+		timerData = timerInfo;
+		
+		//todo : show loading
+		
+		//load data
+		//window.App.Timer.Projects.getProjectTaskListAsync(project.id, getProjectTaskListAsyncCallback);
+		
+		//anim transition
+		$(currentPage).fadeTo(100,0,function() {
+			currentPage.hide();
+			pageSubmit.fadeTo(100,1);
+		});
+	},
+	
+	initVariables = function() {
+		pageSubmit = $('#page-submit');
+		
+	},
+	
+	pageSubmitController = {
+		init: function () {
+			initVariables();
+		},
+		show : showPage
+	};
+	
+	// export to App.widgets
+	window.App.widgets.Timer.PageSubmit = pageSubmitController;
 	
 })();

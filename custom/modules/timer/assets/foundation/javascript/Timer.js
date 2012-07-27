@@ -13,6 +13,9 @@
 	_timer = null,
 	_timerProject = null,
 	_timerTask = null,
+	_projectId = 0,
+	_taskId = 0,
+	_tempCallback,
 	
 	TIMER_COOKIE = 'active-collab-timer',
 	
@@ -20,9 +23,41 @@
 		return (new Date()).getTime();
 	},
 	
+	loadProjectListCallback = function(data) {
+		var c = 0;
+			
+		for(c = 0; c < data.length; c++) {
+			if(data[c].id == _projectId) {
+				_timerProject = data[c];
+				break;
+			}
+		}
+	},
+	loadTaskListCallback = function(data) {
+		var c = 0;
+			
+		for(c = 0; c < data.length; c++) {
+			if(data[c].id == _taskId) {
+				_timerTask = data[c];
+				break;
+			}
+		}
+		if(_tempCallback) {
+			_tempCallback();
+			_tempCallback = null;
+		}
+	},
+	
 	createFromJson = function(json) {
-		_timer = new Timer(jsonTimer.projectId, jsonTimer.taskId, jsonTimer.startDate, jsonTimer.duration);
+		_projectId = json.projectId;
+		_taskId = json.taskId;
+		_timer = new Timer(json.projectId, json.taskId, json.startDate, json.duration);
 		
+		//load associated project info
+		window.App.Timer.Projects.getProjectsListAsync(loadProjectListCallback);
+		
+		//load associated task info
+		window.App.Timer.Projects.getProjectTaskListAsync(json.projectId, loadTaskListCallback);
 	},
 	
 	Timer = function (projectId, taskId, duration, startDate ) {
@@ -33,14 +68,21 @@
 	},
 	
 	TimerController = {
-		init: function () {
+		load: function (callback) {
 			var jsonTimer = JSON.parse($.cookie(TIMER_COOKIE));
 			if (!!jsonTimer && !!jsonTimer.taskId && !!jsonTimer.projectId) {
+				_tempCallback = callback;
 				createFromJson(jsonTimer);
+			}else {
+				if(!!!callback) {
+					callback();
+				}
 			}
 		},
 		create: function(project, task) {
-			_timer = new Timer(project, task);
+			_projectId = project.idd;
+			_taskId = task.id;
+			_timer = new Timer(project.id, task.id);
 			_timerProject = project;
 			_timerTask = task;
 			this.save();

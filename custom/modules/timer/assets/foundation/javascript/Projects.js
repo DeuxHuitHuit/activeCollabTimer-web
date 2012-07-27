@@ -43,12 +43,9 @@
 		init : function(apiUrl) {
 			apiProjectUrl = $("<div/>").html(apiUrl).text() + '&path_info=projects';
 		},
-		preLoad : function() {
-			loadProjects();
-		},
 		
 		getProjectsListAsync : function(callback) {
-			if(!!projectItems) {
+			if(!!!projectItems) {
 				loadProjects(callback)
 			}else {
 				if(!!callback) {
