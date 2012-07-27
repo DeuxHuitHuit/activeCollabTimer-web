@@ -13,37 +13,56 @@
 	lastLoad = null,
 	apiProjectUrl = null,
 	
+	loadProjects = function (callback) {
+		$.ajax({
+			url: apiProjectUrl,
+			success: function(data) {
+				projectItems = data;
+				
+				if(!!callback) {
+					callback(data);
+				}
+			}
+		});
+	},
+	
+	loadTasks = function (projectId, callback) {
+		$.ajax({
+			url: apiProjectUrl + '/' + projectId + '/tasks',
+			success: function(data) {
+				//todo: store data
+				
+				if(!!callback) {
+					callback(data);
+				}
+			}
+		});
+	},
+	
 	Projects = {
 		init : function(apiUrl) {
 			apiProjectUrl = $("<div/>").html(apiUrl).text() + '&path_info=projects';
 		},
-		load : function (callback) {
-			$.ajax({
-				url: apiProjectUrl,
-				success: function(data) {
-					projectItems = data;
-					
-					if(!!callback) {
-						callback();
-					}
-				}
-			});
+		preLoad : function() {
+			loadProjects();
 		},
+		
 		getProjectsListAsync : function(callback) {
 			if(!!projectItems) {
-				this.load(callback)
+				loadProjects(callback)
 			}else {
 				if(!!callback) {
-					callback.call(projectItems);
+					callback(projectItems);
 				}
 			}
 		},
+		
 		getProjectTaskListAsync : function(projectId, callback) {
-			if(!!projectId) {
-				this.load(callback)
+			if(projectId > 0) {
+				loadTasks(projectId,callback)
 			}else {
 				if(!!callback) {
-					callback.call(projectItems);
+					callback({});
 				}
 			}
 		}
