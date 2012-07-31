@@ -45,6 +45,7 @@
 	startBtn = null,
 	submitBtn = null,
 	addBtn = null,
+	deleteBtn = null,
 	currentTaskWrap = null,
 	currentTaskNameHolder = null,
 	timeoutAnim = null,
@@ -73,7 +74,7 @@
 		if(window.App.Timer.Controller.hasTimer()) {
 			var timerInfo = window.App.Timer.Controller.getTimerInfo();
 			
-			if(timerInfo.timer.isRunning()) {
+			if(timerInfo.timer.isRunning) {
 				//relaunch ui refresh
 				timeoutAnim = setTimeout(timeoutAnimCallback,980);
 			}else {
@@ -91,10 +92,10 @@
 	},
 	
 	timerStartButtonClicked = function(e) {
-		
+		e.preventDefault();
 		if(window.App.Timer.Controller.hasTimer()) {
 			var timerInfo = window.App.Timer.Controller.getTimerInfo();
-			if(!timerInfo.timer.isRunning()) {
+			if(!timerInfo.timer.isRunning) {
 				//Start timer
 				timerInfo.timer.start();
 				window.App.Timer.Controller.save();
@@ -110,6 +111,7 @@
 	},
 	
 	timerSubmitButtonClicked = function(e) {
+		e.preventDefault();
 		if(window.App.Timer.Controller.hasTimer()) {
 			var timerInfo = window.App.Timer.Controller.getTimerInfo();
 			if(timerInfo.timer.getDuration() > 0) {
@@ -124,15 +126,34 @@
 	},
 		
 	timerAddButtonClicked = function(e) {
+		e.preventDefault();
 		window.App.widgets.Timer.PageProjects.show(pageTimer);
+		
+		return false;
+	},
+	
+	timerDeleteButtonClicked = function(e) {
+		var timerInfo = window.App.Timer.Controller.getTimerInfo();
+		
+		if(timerInfo.timer.getDuration() > 0) {
+		
+			if (confirm("All unsubmited time will be deleted. Ok to conitnue ?")) { // Clic sur OK
+				if(timerInfo.timer.isRunning) {
+					TimerInfo.timer.stop();
+					window.App.Timer.Controller.remove();
+					updateUI();
+				}
+			}
+		}
 		return false;
 	},
 	
 	initVariables = function() {
 		pageTimer = $('#page-timer');
-		startBtn = $('#timer-start',pageTimer);
-		submitBtn = $('#timer-submit',pageTimer);
-		addBtn = $('#timer-add',pageTimer);
+		startBtn = $('#timer-start-wrap',pageTimer);
+		submitBtn = $('#timer-submit-wrap',pageTimer);
+		addBtn = $('#timer-add-wrap',pageTimer);
+		deleteBtn = $('#timer-current-task-delete',pageTimer);
 		currentTime = $('#timer-time-current',pageTimer);
 		currentTaskWrap = $('#timer-current-task',pageTimer);
 		currentTaskNameHolder = $('span',currentTaskWrap);
@@ -150,6 +171,7 @@
 	updateUI = function() {
 		if(window.App.Timer.Controller.hasTimer()) {
 			var timerInfo = window.App.Timer.Controller.getTimerInfo();
+			deleteBtn.show();
 			startBtn.css({opacity: 1}).removeClass('disabled');
 			addBtn.hide();
 			currentTaskNameHolder.html(timerInfo.project.name + ': ' + timerInfo.task.name);
@@ -169,7 +191,7 @@
 			currentTimeMinutes.html(minutesFormat);
 			
 			
-			if(timerInfo.timer.isRunning()) {
+			if(timerInfo.timer.isRunning) {
 				$('span span',startBtn).html('Stop');
 			}else {
 				$('span span',startBtn).html('Start');
@@ -177,6 +199,7 @@
 			
 		}else {
 			addBtn.show();
+			deleteBtn.hide();
 			startBtn.css({opacity: .2}).addClass('disabled');
 			submitBtn.css({opacity: .2}).addClass('disabled');
 			currentTimeHours.html('00');
@@ -191,12 +214,18 @@
 		submitBtn.click(timerSubmitButtonClicked);
 		//Attach to add timer button
 		addBtn.click(timerAddButtonClicked);
+		
+		deleteBtn.click(timerDeleteButtonClicked);
 	},
 	initFlashingSeparatorIfNeeded = function() {
 		if(window.App.Timer.Controller.hasTimer()) {
 			var timerInfo = window.App.Timer.Controller.getTimerInfo();
-			if(timerInfo.timer.isRunning()) {
+			if(timerInfo.timer.isRunning) {
 				startFlashingSeparator();
+				$('span span',startBtn).html('Stop');
+			}
+			else {
+				$('span span',startBtn).html('Start');
 			}
 		}
 	},

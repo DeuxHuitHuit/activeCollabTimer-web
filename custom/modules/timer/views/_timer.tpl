@@ -3,9 +3,11 @@
 	<section>
 		<div id="timer-display">
 		<header>
+			<div id="timer-start-wrap">
 			{wrap_buttons id='timer-start'}
 				{button}Start{/button}
 			{/wrap_buttons}
+			</div>
 			<div id="timer-time-wrap">
 				<div id="timer-time">
 					<div id="timer-time-current">
@@ -13,9 +15,11 @@
 					</div>
 				</div>
 			</div>
+			<div id="timer-submit-wrap">
 			{wrap_buttons id='timer-submit'}
 				{button}Submit{/button}
 			{/wrap_buttons}
+			</div>
 		</header>
 		</div>
 
@@ -27,9 +31,11 @@
 
 		<div id="timer-footer">
 		<footer>
-			{wrap_buttons id='timer-add'}
-				{button}Pick a Task{/button}
-			{/wrap_buttons}
+			<div id="timer-add-wrap">
+				{wrap_buttons id='timer-add'}
+					{button}Pick a Task{/button}
+				{/wrap_buttons}
+			</div>
 		</footer>
 		</div>
 

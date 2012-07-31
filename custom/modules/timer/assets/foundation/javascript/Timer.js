@@ -16,13 +16,24 @@
 	_projectId = 0,
 	_taskId = 0,
 	_tempCallback,
+	_projectLoaded = false,
+	_taskLoaded = false,
 	
 	TIMER_COOKIE = 'active-collab-timer',
 	
 	_getNow = function () {
 		return (new Date()).getTime();
 	},
-	
+	launchCallbackOnLoaded = function() {
+		if(_projectLoaded && _taskLoaded) {
+			_projectLoaded = false;
+			_taskLoaded = false;
+			if(_tempCallback) {
+				_tempCallback();
+				_tempCallback = null;
+			}
+		}
+	},
 	loadProjectListCallback = function(data) {
 		var c = 0;
 			
@@ -32,7 +43,10 @@
 				break;
 			}
 		}
+		_projectLoaded = true;
+		launchCallbackOnLoaded();
 	},
+	
 	loadTaskListCallback = function(data) {
 		var c = 0;
 			
@@ -42,16 +56,14 @@
 				break;
 			}
 		}
-		if(_tempCallback) {
-			_tempCallback();
-			_tempCallback = null;
-		}
+		_taskLoaded = true;
+		launchCallbackOnLoaded();
 	},
 	
 	createFromJson = function(json) {
 		_projectId = json.projectId;
 		_taskId = json.taskId;
-		_timer = new Timer(json.projectId, json.taskId, json.startDate, json.duration);
+		_timer = new Timer(json.projectId, json.taskId, json.duration, json.startDate);
 		
 		//load associated project info
 		window.App.Timer.Projects.getProjectsListAsync(loadProjectListCallback);
@@ -64,6 +76,11 @@
 		this.projectId = projectId;
 		this.taskId = taskId;
 		this.duration = duration || 0;
+		if(startDate) {
+			this.isRunning = true;
+		}else {
+			this.isRunning = false;
+		}
 		this.startDate = startDate || null;
 	},
 	
@@ -74,7 +91,7 @@
 				_tempCallback = callback;
 				createFromJson(jsonTimer);
 			}else {
-				if(!!!callback) {
+				if(callback) {
 					callback();
 				}
 			}
@@ -96,7 +113,7 @@
 			_timer = null;
 		},
 		hasTimer: function() {
-			return !!_timer;
+			return _timer != null;
 		},
 		getTimerInfo : function() {
 			return {
@@ -108,24 +125,22 @@
 	};
 	
 	Timer.prototype.start = function() {
+		this.isRunning = true;
 		this.startDate = _getNow();
 	};
 	
 	Timer.prototype.stop = function() {
 		this.duration = this.duration + (_getNow() - this.startDate);
 		this.startDate = null;
+		this.isRunning = false;
 	};
 	
 	Timer.prototype.getDuration = function () {
 		var dur = this.duration;
-		if(!!this.startDate) {
+		if(this.isRunning) {
 			dur = dur + (_getNow() - this.startDate);
 		}
 		return dur;
-	};
-	
-	Timer.prototype.isRunning = function() {
-		return !!this.startDate;
 	};
 	
 	// export to App
