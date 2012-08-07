@@ -18,12 +18,17 @@
 	_tempCallback,
 	_projectLoaded = false,
 	_taskLoaded = false,
+	_apiUrl = "",
+	_compagnyItems = null,
+	_userToken = "",
+	_userId,
 	
 	TIMER_COOKIE = 'active-collab-timer',
 	
 	_getNow = function () {
 		return (new Date()).getTime();
 	},
+	
 	launchCallbackOnLoaded = function() {
 		if(_projectLoaded && _taskLoaded) {
 			_projectLoaded = false;
@@ -34,6 +39,7 @@
 			}
 		}
 	},
+	
 	loadProjectListCallback = function(data) {
 		var c = 0;
 			
@@ -84,7 +90,58 @@
 		this.startDate = startDate || null;
 	},
 	
+	findUserInCompagnyRecur(index) {
+		var compagny = _compagnyItems[0],
+			compagnyId = compagny.id;
+			
+		$.ajax({
+			url: _apiUrl + "&path_info=people/" + compagnyId,
+			success: function(data) {
+				var c = 0,
+					found = false;
+				//Loop to find the user
+				for(c = 0; c < 0; c++) {
+					if(false == _userToken) {
+						//_userId = 
+						found = true;
+						break;
+					}
+				}
+				//the user is not found
+				//look for an other compagny
+				if(!found) {
+					if (_compagnyItems.length > index) {
+						findUserInCompagnyRecur(index + 1);
+					}
+				}
+			}
+		});
+	}
+	
+	findUserId = function() {
+		if(_compagnyItems.length > 0) {
+			findUserInCompagnyRecur(0);
+		}
+	},
+	
+	loadCompagny = function(callback) {
+		//load all company
+		
+		$.ajax({
+			url: _apiUrl + "&path_info=people",
+			success: function(data) {
+				_compagnyItems = data;
+				callback();
+			}
+		});
+	},
+	
 	TimerController = {
+		init: function(apiUrl) {
+			_apiUrl = $("<div/>").html(apiUrl).text();
+			_userToken = _apiUrl.split("auth_api_token=")[1];
+			loadCompagny(findUserId);
+		},
 		load: function (callback) {
 			var jsonTimer = JSON.parse($.cookie(TIMER_COOKIE));
 			if (!!jsonTimer && !!jsonTimer.taskId && !!jsonTimer.projectId) {
@@ -112,6 +169,22 @@
 			$.cookie(TIMER_COOKIE, null, {path: '/timer'});
 			_timer = null;
 		},
+		
+		submit: function(hours, minutes, callback) {
+			var 
+			
+			successCallback = function() {
+				//Erase data
+				this.remove();
+				callback(true);
+			},
+			errorCallback = function() {
+				callback(false);
+			};
+			
+			
+		},
+		
 		hasTimer: function() {
 			return _timer != null;
 		},

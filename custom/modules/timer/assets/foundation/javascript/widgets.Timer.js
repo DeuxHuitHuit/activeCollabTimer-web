@@ -13,7 +13,7 @@
 	TimerWidget = {
 		init: function (id, apiUrl) {
 			this.container = $('#' + id);
-			
+			window.App.Timer.Controller.init(apiUrl);
 			window.App.Timer.Projects.init(apiUrl);
 			
 			window.App.Timer.Controller.load(function() {
@@ -116,8 +116,10 @@
 			var timerInfo = window.App.Timer.Controller.getTimerInfo();
 			if(timerInfo.timer.getDuration() > 0) {
 				//stop timer
-				timerInfo.timer.stop();
-				window.App.Timer.Controller.save();
+				if(timerInfo.timer.isRunning) {
+					timerInfo.timer.stop();
+					window.App.Timer.Controller.save();
+				}
 				//Show page submit
 				window.App.widgets.Timer.PageSubmit.show(pageTimer,timerInfo);
 			}
@@ -140,9 +142,8 @@
 			result = confirm("All unsubmited time will be deleted. Ok to conitnue ?");
 			if (result) { // Clic sur OK
 				if(timerInfo.timer.isRunning) {
-					TimerInfo.timer.stop();
+					timerInfo.timer.stop();
 				}
-				
 			}
 		}else {
 			result = true;
@@ -162,7 +163,7 @@
 		deleteBtn = $('#timer-current-task-delete',pageTimer);
 		currentTime = $('#timer-time-current',pageTimer);
 		currentTaskWrap = $('#timer-current-task',pageTimer);
-		currentTaskNameHolder = $('span',currentTaskWrap);
+		currentTaskNameHolder = $('#timer-current-task-name',currentTaskWrap);
 		
 		currentTimeHours = $('<span>');
 		currentTimeSeparator = $('<span>');
@@ -180,7 +181,7 @@
 			deleteBtn.show();
 			startBtn.css({opacity: 1}).removeClass('disabled');
 			addBtn.hide();
-			currentTaskNameHolder.html(timerInfo.project.name + ': ' + timerInfo.task.name);
+			currentTaskNameHolder.html("<strong>Project : </strong>" + timerInfo.project.name + '<br /><strong>Task : </strong>' + timerInfo.task.name);
 			
 			if(timerInfo.timer.getDuration() > 0) {
 				submitBtn.css({opacity: 1}).removeClass('disabled');
@@ -293,12 +294,15 @@
 		if(data) {
 			var c = 0;
 			for(c = 0; c < data.length; c++) {
-				var it = $('<li class="button_holder">'),
-					btn = $('<a class="ui-btn">'); 
+				var it = $('<li>'),
+					btn = $('<a>'); 
+					/*it = $('<li class="button_holder">'),
+					btn = $('<a class="ui-btn">'); */
 					btn.data({id:data[c].id});
 					btn.html(data[c].name);
 				it.html(btn);
 				projectList.append(it);
+				projectList.listview('refresh');
 			}
 			$('a',projectList).click(projectClicked);
 		}else {
@@ -452,7 +456,7 @@
  * @author Deux Huit Huit
  * 
  * Active Collab Timer
- * Page project Tasks
+ * Page Submit
  */
 (function () {
 
@@ -462,16 +466,30 @@
 	
 	pageSubmit = null,
 	timerData = null,
+	inputHours = null,
+	inputMinutes = null,
+	projectName = null,
+	taskName = null,
+	btnSubmit = null,
 
+	updateUI = function() {
+		var dur = timerData.timer.getDuration(),
+				hours  = Math.floor(dur / 1000 / 60 / 60),
+				minutes = Math.floor(dur / 1000 / 60),
+				secondes = Math.floor(dur / 1000 % 60),
+				hoursFormat = (hours < 10) ? '0' + hours : '' + hours,
+				minutesFormat = (minutes < 10) ? '0' + minutes : '' + minutes;
+				
+		inputHours.val(hoursFormat);
+		inputMinutes.val(minutesFormat);
+		projectName.html(timerData.project.name);
+		taskName.html(timerData.task.name);
+	},
 	showPage = function(currentPage, timerInfo) {
 		//Save timer info
 		timerData = timerInfo;
-		
-		//todo : show loading
-		
-		//load data
-		//window.App.Timer.Projects.getProjectTaskListAsync(project.id, getProjectTaskListAsyncCallback);
-		
+		 
+		updateUI();
 		//anim transition
 		$(currentPage).fadeTo(100,0,function() {
 			currentPage.hide();
@@ -481,12 +499,34 @@
 	
 	initVariables = function() {
 		pageSubmit = $('#page-submit');
-		
+		inputHours = $('#input-hours',pageSubmit);
+		inputMinutes = $('#input-minutes',pageSubmit);
+		projectName = $('#page-submit-project',pageSubmit);
+		taskName = $('#page-submit-task',pageSubmit);
+		btnSubmit = $('#page-submit-btn',pageSubmit);
+	},
+	
+	btnSubmitClicked = function(e) {
+		var hours = inputHours.val(),
+			minutes = inputMinutes.val();
+			
+		if( hours > 0 || minutes > 0) {
+			window.App.Timer.Controller.submit(hours, minutes);
+		}else {
+			alert ("Can not submit no time");
+		}
+		e.preventDefault();
+		return false;
+	},
+	
+	bindButtons = function() {
+		btnSubmit.click(btnSubmitClicked);
 	},
 	
 	pageSubmitController = {
 		init: function () {
 			initVariables();
+			bindButtons();
 		},
 		show : showPage
 	};

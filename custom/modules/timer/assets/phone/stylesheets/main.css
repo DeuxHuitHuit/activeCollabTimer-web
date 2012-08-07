@@ -17,9 +17,6 @@
 }
 
 /**********************************/
-#timer #timer-display {
-
-}
 
 #timer #timer-display .button_holder {
 	width: 90%;
@@ -28,37 +25,8 @@
 }
 
 #timer .button_holder .ui-btn {
-	height: 55px;
-	width: 50%;
+	width: 80%;
 	margin: 20px auto 0;
-	padding: 0px 10px;
-	color: #656565;
-	font-size: 25px;
-	border: 1px solid #BEBFB9;
-	background: none;
-	font-weight: normal;
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#F9F9F9), to(#D7D7D7));
-	background-image: -webkit-linear-gradient(top, #F9F9F9, #D7D7D7);
-	background-image: -moz-linear-gradient(top, #F9F9F9, #D7D7D7);
-	background-image: -ms-linear-gradient(top, #F9F9F9, #D7D7D7);
-	background-image: -o-linear-gradient(top, #F9F9F9, #D7D7D7);
-	background-image: linear-gradient(top, #F9F9F9, #D7D7D7);
-}
-#timer .button_holder .ui-btn.ui-btn-hover-f {
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#D7D7D7), to(#F9F9F9));
-	background-image: -webkit-linear-gradient(top, #D7D7D7, #F9F9F9);
-	background-image: -moz-linear-gradient(top, #D7D7D7, #F9F9F9);
-	background-image: -ms-linear-gradient(top, #D7D7D7, #F9F9F9);
-	background-image: -o-linear-gradient(top, #D7D7D7, #F9F9F9);
-	background-image: linear-gradient(top, #D7D7D7, #F9F9F9);
-}
-
-#timer #timer-display #timer-start {
-
-}
-
-#timer #timer-display #timer-submit {
-
 }
 
 #timer #timer-display #timer-time-wrap {
@@ -81,47 +49,65 @@
 /**********************************/
 #timer #timer-current-task {
 	font-size: 18px;
+	line-height: 25px;
 }
+
 #timer #timer-current-task h3 {
 	font-size: 1.3em;
 }
 
 /**********************************/
-#timer #timer-footer {
-
-}
 
 #timer #timer-footer .button_holder .ui-btn {
 	width: 90%;
 }
 
-#timer  #timer-footer #timer-add {
-	
-}
-
-
 #timer #timer-start-wrap {
 	width: 24%;
 	display: inline-block;
-	
 }
+
 #timer #timer-submit-wrap {
 	width: 24%;
 	display: inline-block;
-	
-	
 }
 
-#timer #page-project-tasks {
+#timer #page-project-tasks, #timer #page-projects, #timer #page-submit {
 	display: none;
 }
 
-#timer #page-project-tasks {
-	display: none;
+#timer #page-project-tasks h2, #timer #page-projects h2, #timer #page-submit h2 {
+	font-size: 30px;
 }
 
-#timer #page-projects {
-	display: none;
+#timer #page-submit input{
+	text-align: center;
+}
+
+#timer #page-submit #page-submit-btn {
+	margin-top: 20px;
+	font-size: 30px;
+}
+
+#timer #page-submit p {
+	font-size: 20px;
+}
+
+#timer #page-submit .ui-grid-a label {
+	font-size: 25px;
+}
+
+#timer-current-task-delete {
+	cursor: pointer;
+}
+
+
+#timer .ui-checkbox .ui-btn-icon-left .ui-btn-inner, .ui-radio .ui-btn-icon-left .ui-btn-inner {
+	padding-left: 75px;
+}
+
+ .ui-content form {
+	padding-right: 25px !important;
 }
 
 /*
