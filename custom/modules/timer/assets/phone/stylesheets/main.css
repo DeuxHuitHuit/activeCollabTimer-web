@@ -7,6 +7,15 @@
 	position: relative;
 }
 
+#timer ul{
+	list-style: none;
+}
+
+#timer ul a.ui-btn {
+	line-height: 55px;
+	vertical-align: middle;
+}
+
 /**********************************/
 #timer #timer-display {
 
@@ -22,7 +31,7 @@
 	height: 55px;
 	width: 50%;
 	margin: 20px auto 0;
-	padding: 15px 10px;
+	padding: 0px 10px;
 	color: #656565;
 	font-size: 25px;
 	border: 1px solid #BEBFB9;
@@ -53,9 +62,8 @@
 }
 
 #timer #timer-display #timer-time-wrap {
-	width: 90%;
-	padding-right: 18px;
-	margin-left: 17px;
+	width: 50%;
+	display: inline-block;
 }
 
 #timer #timer-display #timer-time {
@@ -89,6 +97,31 @@
 
 #timer  #timer-footer #timer-add {
 	
+}
+
+
+#timer #timer-start-wrap {
+	width: 24%;
+	display: inline-block;
+	
+}
+#timer #timer-submit-wrap {
+	width: 24%;
+	display: inline-block;
+	
+	
+}
+
+#timer #page-project-tasks {
+	display: none;
+}
+
+#timer #page-project-tasks {
+	display: none;
+}
+
+#timer #page-projects {
+	display: none;
 }
 
 /*

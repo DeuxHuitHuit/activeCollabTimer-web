@@ -42,6 +42,7 @@
 	</section>
 </div>
 <div id="page-projects">
+	<p>Projects :</p>
 	<section>
 		<ul>
 			
@@ -50,6 +51,7 @@
 </div>
 
 <div id="page-project-tasks">
+	<p>Tasks :</p>
 	<section>
 		<ul>
 			

@@ -133,17 +133,23 @@
 	},
 	
 	timerDeleteButtonClicked = function(e) {
-		var timerInfo = window.App.Timer.Controller.getTimerInfo();
+		var timerInfo = window.App.Timer.Controller.getTimerInfo(),
+			result = false;
 		
 		if(timerInfo.timer.getDuration() > 0) {
-		
-			if (confirm("All unsubmited time will be deleted. Ok to conitnue ?")) { // Clic sur OK
+			result = confirm("All unsubmited time will be deleted. Ok to conitnue ?");
+			if (result) { // Clic sur OK
 				if(timerInfo.timer.isRunning) {
 					TimerInfo.timer.stop();
-					window.App.Timer.Controller.remove();
-					updateUI();
 				}
+				
 			}
+		}else {
+			result = true;
+		}
+		if(result) {
+			window.App.Timer.Controller.remove();
+			updateUI();
 		}
 		return false;
 	},
@@ -199,11 +205,12 @@
 			
 		}else {
 			addBtn.show();
-			deleteBtn.hide();
+			deleteBtn.hide()
 			startBtn.css({opacity: .2}).addClass('disabled');
 			submitBtn.css({opacity: .2}).addClass('disabled');
 			currentTimeHours.html('00');
 			currentTimeMinutes.html('00');
+			currentTaskNameHolder.html('none...');
 		}
 	},
 	
@@ -286,8 +293,8 @@
 		if(data) {
 			var c = 0;
 			for(c = 0; c < data.length; c++) {
-				var it = $('<li>'),
-					btn = $('<a>'); 
+				var it = $('<li class="button_holder">'),
+					btn = $('<a class="ui-btn">'); 
 					btn.data({id:data[c].id});
 					btn.html(data[c].name);
 				it.html(btn);
@@ -383,8 +390,8 @@
 		if(data) {
 			var c = 0;
 			for(c = 0; c < data.length; c++) {
-				var it = $('<li>'),
-					btn = $('<a>');
+				var it = $('<li class="button_holder">'),
+					btn = $('<a class="ui-btn">'); 
 					btn.data({id : data[c].id});
 					btn.html(data[c].name);
 				it.html(btn);

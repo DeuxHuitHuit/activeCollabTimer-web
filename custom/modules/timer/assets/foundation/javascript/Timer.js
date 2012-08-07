@@ -109,7 +109,7 @@
 		},
 		
 		remove: function () {
-			$.cookie(TIMER_COOKIE, null);
+			$.cookie(TIMER_COOKIE, null, {path: '/timer'});
 			_timer = null;
 		},
 		hasTimer: function() {
