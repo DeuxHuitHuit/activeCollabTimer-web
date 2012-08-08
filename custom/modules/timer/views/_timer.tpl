@@ -78,7 +78,7 @@
 			</div>
 		</div>
 		<div class="ui-body-e">
-		<input type="checkbox" id="chk-delete-timer" data-mini="true"><label for="chk-delete-timer">Delete timer on submit</label>
+			<input type="checkbox" id="chk-delete-timer" data-mini="true"><label for="chk-delete-timer">Delete timer on submit</label>
 		</div>
 		<div class="ui-body-b">
 			<a href="#submit" id="page-submit-btn" data-role="button">Submit</a>
@@ -89,5 +89,5 @@
 
 </div>
 <script type="text/javascript">
-	App.widgets.Timer.init('timer', '{$api_url}');
+	App.widgets.Timer.init('timer', '{$api_url}', '{$user_id}');
 </script>

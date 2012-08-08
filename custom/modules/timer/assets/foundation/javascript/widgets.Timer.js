@@ -11,9 +11,9 @@
 	var 
 
 	TimerWidget = {
-		init: function (id, apiUrl) {
+		init: function (id, apiUrl, userId) {
 			this.container = $('#' + id);
-			window.App.Timer.Controller.init(apiUrl);
+			window.App.Timer.Controller.init(apiUrl,userId);
 			window.App.Timer.Projects.init(apiUrl);
 			
 			window.App.Timer.Controller.load(function() {
@@ -296,8 +296,6 @@
 			for(c = 0; c < data.length; c++) {
 				var it = $('<li>'),
 					btn = $('<a>'); 
-					/*it = $('<li class="button_holder">'),
-					btn = $('<a class="ui-btn">'); */
 					btn.data({id:data[c].id});
 					btn.html(data[c].name);
 				it.html(btn);
@@ -387,19 +385,20 @@
 	getProjectTaskListAsyncCallback = function(data) {
 		//save task
 		projectTasks = data;
-		//todo : hide loading
 		
 		//Populate list
 		taskList.html('');
 		if(data) {
 			var c = 0;
 			for(c = 0; c < data.length; c++) {
-				var it = $('<li class="button_holder">'),
-					btn = $('<a class="ui-btn">'); 
+				var 
+				it = $('<li>'),
+					btn = $('<a>'); 
 					btn.data({id : data[c].id});
 					btn.html(data[c].name);
 				it.html(btn);
 				taskList.append(it);
+				taskList.listview('refresh');
 			}
 			$('a',taskList).click(taskClicked);
 		}else {
@@ -471,6 +470,7 @@
 	projectName = null,
 	taskName = null,
 	btnSubmit = null,
+	chkDeleteTimer = null,
 
 	updateUI = function() {
 		var dur = timerData.timer.getDuration(),
@@ -485,6 +485,7 @@
 		projectName.html(timerData.project.name);
 		taskName.html(timerData.task.name);
 	},
+	
 	showPage = function(currentPage, timerInfo) {
 		//Save timer info
 		timerData = timerInfo;
@@ -503,15 +504,26 @@
 		inputMinutes = $('#input-minutes',pageSubmit);
 		projectName = $('#page-submit-project',pageSubmit);
 		taskName = $('#page-submit-task',pageSubmit);
+		chkDeleteTimer = $('#chk-delete-timer',pageSubmit);
 		btnSubmit = $('#page-submit-btn',pageSubmit);
 	},
 	
 	btnSubmitClicked = function(e) {
 		var hours = inputHours.val(),
-			minutes = inputMinutes.val();
+			minutes = inputMinutes.val(),
+			callback = function(result) {
+				if(result) {
+					//Send user to the timer page
+					window.App.widgets.Timer.PageTimer.show(pageSubmit);
+				}else {
+					//Show error
+					alert("Submit fail.");
+				}
+			};
 			
 		if( hours > 0 || minutes > 0) {
-			window.App.Timer.Controller.submit(hours, minutes);
+			var deleteTimer = $('.ui-icon',chkDeleteTimer.closest('.ui-checkbox')).hasClass('ui-icon-checkbox-on');
+			window.App.Timer.Controller.submit(hours, minutes,timerData.project.id, timerData.task.id, deleteTimer, callback );
 		}else {
 			alert ("Can not submit no time");
 		}

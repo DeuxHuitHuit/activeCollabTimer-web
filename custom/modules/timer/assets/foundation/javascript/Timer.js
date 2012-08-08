@@ -90,7 +90,7 @@
 		this.startDate = startDate || null;
 	},
 	
-	findUserInCompagnyRecur(index) {
+	/*findUserInCompagnyRecur(index) {
 		var compagny = _compagnyItems[0],
 			compagnyId = compagny.id;
 			
@@ -116,15 +116,15 @@
 				}
 			}
 		});
-	}
+	}*/
 	
-	findUserId = function() {
+	/*findUserId = function() {
 		if(_compagnyItems.length > 0) {
 			findUserInCompagnyRecur(0);
 		}
-	},
+	},*/
 	
-	loadCompagny = function(callback) {
+	/*loadCompagny = function(callback) {
 		//load all company
 		
 		$.ajax({
@@ -134,13 +134,18 @@
 				callback();
 			}
 		});
+	},*/
+	removeCurrentCookie = function() {
+		$.cookie(TIMER_COOKIE, null, {path: '/timer'});
+		_timer = null;
 	},
 	
 	TimerController = {
-		init: function(apiUrl) {
+		init: function(apiUrl,userId) {
 			_apiUrl = $("<div/>").html(apiUrl).text();
 			_userToken = _apiUrl.split("auth_api_token=")[1];
-			loadCompagny(findUserId);
+			_userId = userId;
+			//loadCompagny(findUserId);
 		},
 		load: function (callback) {
 			var jsonTimer = JSON.parse($.cookie(TIMER_COOKIE));
@@ -166,22 +171,45 @@
 		},
 		
 		remove: function () {
-			$.cookie(TIMER_COOKIE, null, {path: '/timer'});
-			_timer = null;
+			removeCurrentCookie();
 		},
 		
-		submit: function(hours, minutes, callback) {
+		submit: function(hours, minutes, projectId, taskId, deleteTimer, callback) {
 			var 
 			
 			successCallback = function() {
 				//Erase data
-				this.remove();
+				if(deleteTimer) {
+					removeCurrentCookie();
+				}else {
+					_timer.reset();
+				}
 				callback(true);
 			},
 			errorCallback = function() {
 				callback(false);
 			};
+			/*
+			submitted = submitted
+			time[user_id] = 1
+			time[value] = 3:30
+			time[record_date] = 2008-05-01
+			*/
 			
+			$.ajax({
+				type: "POST",
+				url: _apiUrl + "&path_info=projects/projects/tracking/time/add", //+ projectId + "/time/add",
+				data : {submitted : "submitted",
+						time_record : {
+							user_id : '1',
+							value : hours + ":" + minutes,
+							record_date : "2012-08-09",
+							job_type_id: '1'
+						}
+					},
+				success: successCallback,
+				error : errorCallback
+			});
 			
 		},
 		
@@ -200,6 +228,12 @@
 	Timer.prototype.start = function() {
 		this.isRunning = true;
 		this.startDate = _getNow();
+	};
+	
+	Timer.prototype.reset = function() {
+		this.isRunning = false;
+		this.startDate = null;
+		this.duration = 0;
 	};
 	
 	Timer.prototype.stop = function() {

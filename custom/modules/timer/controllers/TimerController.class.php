@@ -37,6 +37,7 @@
 
       // assign template variable
       $this->smarty->assign('api_url', ROOT_URL . '/api.php?format=json&auth_api_token=1-HQVcG1x3xfSNIMypMkDsAVT8W670QwGwhI387Tta');
+	  $this->smarty->assign('user_id', ROOT_URL . '1');
     } // __construct
 
     /**

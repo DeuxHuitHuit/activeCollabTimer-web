@@ -11,22 +11,24 @@
 	list-style: none;
 }
 
-#timer ul a.ui-btn {
-	line-height: 55px;
-	vertical-align: middle;
+#timer ul a {
+	/*line-height: 55px;
+	vertical-align: middle;*/
+	font-size: 40px;
 }
 
 /**********************************/
 
 #timer #timer-display .button_holder {
-	width: 90%;
-	padding-right: 18px;
-	margin-left: 17px;
+	width: 100%;
+	padding-right: 10px;
+	margin-left: 0px;
 }
 
 #timer .button_holder .ui-btn {
-	width: 80%;
+	width: 100%;
 	margin: 20px auto 0;
+	font-size: 30px;
 }
 
 #timer #timer-display #timer-time-wrap {
@@ -35,7 +37,7 @@
 }
 
 #timer #timer-display #timer-time {
-	width: 60%;
+	width: 100%;
 	height: 100px;
 	margin: 0 auto;
 	display:block;
@@ -72,12 +74,18 @@
 	display: inline-block;
 }
 
+#timer #timer-submit-wrap .button_holder .ui-btn {
+	font-size: 20px !important;
+	line-height: 30px;
+}
+
 #timer #page-project-tasks, #timer #page-projects, #timer #page-submit {
 	display: none;
 }
 
 #timer #page-project-tasks h2, #timer #page-projects h2, #timer #page-submit h2 {
 	font-size: 30px;
+	padding-bottom: 30px;
 }
 
 #timer #page-submit input{
